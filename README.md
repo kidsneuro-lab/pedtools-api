@@ -50,7 +50,9 @@ curl -s -X POST \
 curl -s -o pedigree.png  http://localhost:8004/ocpu/tmp/$PKEY/graphics/1/png
 ```
 
-
+## Other useful endpoints
+- http://localhost:8004/ocpu/library/pedtools/info
+- http://localhost:8004/ocpu/library/pedtools/R/
 
 
 ## Reference
