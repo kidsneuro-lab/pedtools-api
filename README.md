@@ -39,7 +39,7 @@ docker run --rm -p 8004:8004 pedtools
 ```
 
 ## Explanation 
-The calls made are:
+See the [demo.sh](demo.sh) script for the real commands but the idea is:
 
 - Build the ped object
 ```
@@ -51,7 +51,7 @@ curl -s -H "Content-Type: application/json" \
 - Render it using the plot ped function
 ```
 curl -s -X POST \
-  -d "x=$KEY&labs=TRUE" \
+  -d "x=$KEY" \
   http://localhost:8004/ocpu/library/pedtools/R/plot.ped
 ```
 
