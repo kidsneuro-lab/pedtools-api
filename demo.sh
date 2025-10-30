@@ -1,28 +1,40 @@
 #!/usr/bin/env bash
 echo "Starting pedtools demo"
 
-CREATE=$(curl -s -H "Content-Type: application/json" \
-  -d '{"id":[1,2,3],"fid":[0,0,1],"mid":[0,0,2],"sex":[1,2,1]}' \
+echo "-----------------------------------------------------"
+echo "Creating pedigree object."
+RESULT1=$(curl -s -H "Content-Type: application/json" \
+  -d '{"id":["fa","mo","girl"],"fid":["","","fa"],"mid":["","","mo"],"sex":[1,2,2]}' \
   http://localhost:8004/ocpu/library/pedtools/R/ped)
-echo "$CREATE"
-echo "Created pedigree object."
+echo "$RESULT1"
 
-echo "Fetching session key..."
-KEY=$(echo "$CREATE" | awk -F'/tmp/' '/tmp/{print $2}' | cut -d'/' -f1 | head -n1)
-echo "Session: $KEY"
+echo "-----------------------------------------------------"
+echo "Fetching session key 1..."
+SESSION1=$(echo "$RESULT1" | awk -F'/tmp/' '/tmp/{print $2}' | cut -d'/' -f1 | head -n1)
+echo "Session: $SESSION1"
 
+echo "-----------------------------------------------------"
 echo "Fetching console output:"
-curl http://localhost:8004/ocpu/tmp/$KEY/stdout/text
-echo ""
+curl "http://localhost:8004/ocpu/tmp/${SESSION1}/stdout/text"
 
-echo "Generating pedigree plot..."
-PLOT=$(curl -s -X POST \
-  -d "x=$KEY&labs=TRUE" \
+echo "-----------------------------------------------------"
+echo "Generating pedigree plot with father and girl affected..."
+RESULT2=$(curl -s -X POST \
+  --data-urlencode "x=$SESSION1" \
+  --data-urlencode "aff=c('girl','fa')" \
+  --data-urlencode "labs=c(Father='fa',Mother='mo',Daughter='girl')" \
+  --data-urlencode "cex=1.5" \
+  --data-urlencode "title='Family A'" \
   http://localhost:8004/ocpu/library/pedtools/R/plot.ped)
+echo "$RESULT2"
   
-echo "$PLOT"
-# returns a NEW session key that contains /graphics/1/png
-PKEY=$(echo "$PLOT" | awk -F'/tmp/' '/tmp/{print $2}' | cut -d'/' -f1 | head -n1)
-curl -s -o pedigree.png  http://localhost:8004/ocpu/tmp/$PKEY/graphics/1/png
+echo "-----------------------------------------------------"
+echo "Fetching session key 2..."
+SESSION2=$(echo "$RESULT2" | awk -F'/tmp/' '/tmp/{print $2}' | cut -d'/' -f1 | head -n1)
+echo "Session 2: $SESSION2"
 
-echo "Pedigree plot saved as pedigree.png"
+echo "-----------------------------------------------------"
+echo "Downloading pedigree plot image to pedigree.png"
+curl -s -o pedigree.png  http://localhost:8004/ocpu/tmp/$SESSION2/graphics/1/png
+echo "Image saved to pedigree.png"
+
