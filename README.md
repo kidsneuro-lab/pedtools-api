@@ -8,12 +8,16 @@ This can be called using `curl`, passing in a `json` payload.
 ### input data
 ```json
 {"id":[1,2,3],"fid":[0,0,1],"mid":[0,0,2],"sex":[1,2,1]}
-...
+```
+
+```
+# affected
 aff=c('girl','fa')
-...
+# labels
 labs=c(Father='fa',Mother='mo',Daughter='girl'
-...
+# other plot attributes
 title='Family A'
+cex=1.5
 ```
 ### output image
 ![Pedigree Example](./pedigree.png)
