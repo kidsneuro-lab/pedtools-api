@@ -22,10 +22,36 @@ docker build -t pedtools .
 docker run --rm -p 8004:8004 pedtools
 ```
 
+
 ## Run demo
 ```sh
 ./demo.sh
 ```
+
+## Explanation 
+The calls made are:
+
+- Build the ped object
+```
+curl -s -H "Content-Type: application/json" \
+  -d '{"id":[1,2,3],"fid":[0,0,1],"mid":[0,0,2],"sex":[1,2,1]}' \
+  http://localhost:8004/ocpu/library/pedtools/R/ped
+```
+
+- Render it using the plot ped function
+```
+curl -s -X POST \
+  -d "x=$KEY&labs=TRUE" \
+  http://localhost:8004/ocpu/library/pedtools/R/plot.ped
+```
+
+- Download the resulting png
+```sh
+curl -s -o pedigree.png  http://localhost:8004/ocpu/tmp/$PKEY/graphics/1/png
+```
+
+
+
 
 ## Reference
 - https://github.com/magnusdv/pedtools
