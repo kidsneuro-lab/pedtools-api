@@ -8,6 +8,12 @@ This can be called using `curl`, passing in a `json` payload.
 ### input data
 ```json
 {"id":[1,2,3],"fid":[0,0,1],"mid":[0,0,2],"sex":[1,2,1]}
+...
+aff=c('girl','fa')
+...
+labs=c(Father='fa',Mother='mo',Daughter='girl'
+...
+title='Family A'
 ```
 ### output image
 ![Pedigree Example](./pedigree.png)
